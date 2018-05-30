@@ -50,9 +50,8 @@ class AbnAmro extends AbstractParser
             return trim($match[1]);
         }
 
-        if (preg_match("/\/IBAN\/\w+\//", $lines[1], $match)) {
-            $match = explode("/", $match[0]);
-            return trim($match[2]);
+        if (preg_match("/\/IBAN\/(\w+)\//", $lines[1], $match)) {
+            return trim($match[1]);
         }
         
         return null;
@@ -84,6 +83,14 @@ class AbnAmro extends AbstractParser
 
         if (preg_match('/^GIRO([0-9 ]{9}) (.*)$/', $line, $match, PREG_OFFSET_CAPTURE)) {
             $offset = $match[2][1];
+        }
+        
+        if($offset == 0) {
+            // No offset found yet. let's check
+            $line = str_replace(array("\n","\r"), array('',''),$lines[1]);
+            if (preg_match("/\/NAME\/([a-zA-Z0-9\s.]+)\//", $line, $match)) {
+                return $match[1];
+            }
         }
 
         // No account number found, so no name either
