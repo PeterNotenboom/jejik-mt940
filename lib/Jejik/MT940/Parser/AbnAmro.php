@@ -50,6 +50,11 @@ class AbnAmro extends AbstractParser
             return trim($match[1]);
         }
 
+        if (preg_match("/\/IBAN\/\w+\//", $lines[1], $match)) {
+            $match = explode("/", $match[0]);
+            return trim($match[2]);
+        }
+        
         return null;
     }
 
