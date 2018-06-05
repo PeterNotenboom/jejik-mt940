@@ -125,6 +125,7 @@ class AbnAmro extends AbstractParser {
             return $extra_description['description'];
         }
 
+        $single_line_description = str_replace(array("\n","\r"), array('',''), $description);
         if(preg_match("/\/REMI\/([a-zA-Z0-9\s.-].+)\//", $single_line_description, $match)) {
             $match = explode('/',$match[1]);
             return $match[0];
